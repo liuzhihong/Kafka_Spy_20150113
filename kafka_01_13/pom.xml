@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>spy.all</artifactId>
+	<packaging>pom</packaging>
+	<groupId>com.suning.app</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<name>spy.all</name>
+	
+	<developers>
+		<developer>
+			<id>karry</id>
+			<name>陈帅</name>
+			<email>14080209@CNSUNING.COM</email>
+		</developer>
+		<developer>
+			<id>zhihong.liuzh</id>
+			<name>刘志红</name>
+			<email>13073050@CNSUNING.COM</email>
+		</developer>
+	</developers>
+
+	<properties>
+		<maven.test.skip>false</maven.test.skip>
+		<java.version>1.6</java.version>
+		<file_encoding>UTF-8</file_encoding>
+		<pom.version>1.0-SNAPSHOT</pom.version>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+	</properties>
+	
+	<modules>
+		<module>core</module>
+		<module>deploy</module>
+		<module>api</module>
+  	</modules>
+  	
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- ================================================= -->
+			<!-- 日志及相关依赖 -->
+			<!-- ================================================= -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.17</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.github.adyliu</groupId>
+				<artifactId>zkclient</artifactId>
+				<version>2.1.1</version>
+			</dependency>
+			
+			<dependency>
+			  <groupId>com.alibaba</groupId>
+			  <artifactId>fastjson</artifactId>
+			  <version>1.2.1</version>
+			</dependency>
+
+			<!-- ======================================== -->
+			<!-- 其它第三方依赖 -->
+			<!-- ======================================== -->
+			
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.3</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils-core</artifactId>
+				<version>1.8.3</version>
+			</dependency>
+			
+
+		</dependencies>
+
+	</dependencyManagement>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.adyliu</groupId>
+			<artifactId>zkclient</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/conf</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/java</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+			
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/conf.test</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/java.test</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${file_encoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>!release</value>
+				</property>
+			</activation>
+			
+			<build>
+				<filters>
+			<filter>../antx-dev.properties</filter>
+		</filters>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>release</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>release</value>
+				</property>
+			</activation>
+			
+			<build>
+				<filters>
+			<filter>../antx-release.properties</filter>
+		</filters>
+			</build>
+		</profile>
+
+	</profiles>
+
+</project>
